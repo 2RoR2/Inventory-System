@@ -166,6 +166,18 @@ function renderCatalog() {
       }
 
       return `${item.name} ${item.category}`.toLowerCase().includes(normalizedItemSearch);
+    })
+    .sort((leftItem, rightItem) => {
+      const leftStock = Number(stockLevels[leftItem.name] ?? 0);
+      const rightStock = Number(stockLevels[rightItem.name] ?? 0);
+      const leftSoldOut = leftStock === 0;
+      const rightSoldOut = rightStock === 0;
+
+      if (leftSoldOut === rightSoldOut) {
+        return leftItem.index - rightItem.index;
+      }
+
+      return leftSoldOut ? 1 : -1;
     });
 
   categoryNav.innerHTML = categories
@@ -182,12 +194,14 @@ function renderCatalog() {
   catalog.innerHTML = visibleItems
     .map(
       (item) => `
-        <article class="catalog-card ${item.flavorClass} ${quantityMap[item.name] ? "selected" : ""}" data-card-index="${item.index}">
+        <article class="catalog-card ${item.flavorClass} ${quantityMap[item.name] ? "selected" : ""} ${Number(stockLevels[item.name] ?? 0) === 0 ? "sold-out" : ""}" data-card-index="${item.index}">
           ${quantityMap[item.name] ? `<span class="selection-badge">${quantityMap[item.name]}</span>` : ""}
           <span class="category-tag">${item.category}</span>
           <p class="item-name">${item.name}</p>
           <p class="item-price">${priceFormatter.format(item.price)} / pcs</p>
-          <div class="item-stock-display">Available: ${stockLevels[item.name] ?? 0}</div>
+          <div class="item-stock-display">
+            ${Number(stockLevels[item.name] ?? 0) === 0 ? `<span class="item-unavailable">Not Available</span>` : `Available: ${stockLevels[item.name] ?? 0}`}
+          </div>
           ${
             quantityMap[item.name]
               ? `
@@ -828,8 +842,13 @@ catalog.addEventListener("click", (event) => {
   const currentValue = Number(selectedQuantities[item.name] || 0);
   const stockValue = Number(editableStockLevels[item.name] || 0);
 
+  if (stockValue === 0) {
+    showToast(`${item.name} is not available.`, "warning");
+    return;
+  }
+
   if (currentValue >= stockValue) {
-    window.alert("Cannot add more than the stock available.");
+    showToast("Cannot add more than the stock available.", "warning");
     return;
   }
 

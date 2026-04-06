@@ -384,6 +384,30 @@ h2 {
   margin-bottom: 6px;
 }
 
+.stock-summary-card {
+  background: linear-gradient(180deg, rgba(255, 252, 249, 0.98), rgba(255, 245, 247, 0.98));
+  box-shadow: 0 10px 20px rgba(214, 162, 170, 0.08);
+}
+
+.stock-summary-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.stock-summary-value {
+  display: block;
+  font-size: 1.55rem;
+  line-height: 1;
+  color: #8f4465;
+  margin-bottom: 6px;
+}
+
+.stock-summary-unit {
+  font-size: 0.76rem;
+  color: #ab7b89;
+}
+
 .stock-adjustment-groups {
   display: grid;
   gap: 14px;
@@ -410,6 +434,15 @@ h2 {
   font-size: 1.1rem;
 }
 
+.stock-group-total {
+  color: #8f4465;
+  background: rgba(229, 142, 160, 0.12);
+  border: 1px solid rgba(229, 142, 160, 0.18);
+  border-radius: 999px;
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
 .stock-group-list {
   display: grid;
   gap: 10px;
@@ -420,12 +453,18 @@ h2 {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 12px;
   align-items: center;
-  padding: 10px 0;
+  padding: 12px;
   border-bottom: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.64);
 }
 
 .stock-adjust-item:last-child {
   border-bottom: 0;
+}
+
+.stock-adjust-copy {
+  min-width: 0;
 }
 
 .stock-adjust-name,
@@ -435,6 +474,7 @@ h2 {
 
 .stock-adjust-name {
   font-weight: 700;
+  line-height: 1.35;
 }
 
 .stock-adjust-price {
@@ -443,12 +483,15 @@ h2 {
 }
 
 .stock-adjust-input {
-  width: 82px;
-  min-height: 42px;
-  padding: 8px 10px;
+  width: 92px;
+  min-height: 46px;
+  padding: 8px 12px;
   border-radius: 12px;
   border: 1px solid var(--line);
   background: #fff;
+  text-align: center;
+  font-weight: 700;
+  color: #7c3354;
 }
 
 .category-nav {
@@ -507,6 +550,10 @@ h2 {
 
 .label-tart {
   color: #d98f71;
+}
+
+.label-all {
+  color: #d46c95;
 }
 
 .label-pie {
@@ -587,6 +634,10 @@ h2 {
   background: linear-gradient(145deg, #fff0ba, #ffe08c);
 }
 
+.flavor-portuguese {
+  background: linear-gradient(145deg, #ffe2c7, #f6b98b);
+}
+
 .flavor-chicken {
   background: linear-gradient(145deg, #ffe2d3, #f8c8b0);
 }
@@ -597,6 +648,18 @@ h2 {
 
 .flavor-egg {
   background: linear-gradient(145deg, #fff5c8, #ffe89e);
+}
+
+.flavor-ham-cheese {
+  background: linear-gradient(145deg, #ffd9de, #ffbfc9);
+}
+
+.flavor-crab {
+  background: linear-gradient(145deg, #ffe7dc, #f8cdb8);
+}
+
+.flavor-sausage {
+  background: linear-gradient(145deg, #f7dcd8, #ecb9b0);
 }
 
 .flavor-pistachio {
@@ -615,8 +678,8 @@ h2 {
   background: linear-gradient(145deg, #f7eadc, #ead2b4);
 }
 
-.flavor-puff {
-  background: linear-gradient(145deg, #fff1d9, #f6dbab);
+.flavor-puff-duo {
+  background: linear-gradient(145deg, #fff1d9 0%, #f6dbab 48%, #f4d5d0 100%);
 }
 
 .selection-badge {
@@ -776,6 +839,58 @@ h2 {
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   padding: 16px;
+}
+
+.checkout-panel {
+  background: linear-gradient(180deg, rgba(208, 102, 138, 0.94), rgba(178, 76, 118, 0.96));
+  border-color: rgba(148, 56, 93, 0.24);
+  color: #fff8fb;
+}
+
+.checkout-panel .section-label,
+.checkout-panel .section-helper,
+.checkout-panel .field span,
+.checkout-panel .totals span,
+.checkout-panel .selected-item div,
+.checkout-panel .empty-state {
+  color: rgba(255, 242, 247, 0.82);
+}
+
+.checkout-panel h2,
+.checkout-panel .selected-item strong,
+.checkout-panel .totals strong {
+  color: #ffffff;
+}
+
+.checkout-panel .field select {
+  background: rgba(255, 248, 251, 0.96);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #7c3354;
+}
+
+.checkout-panel .selected-items {
+  border: 1px solid rgba(255, 232, 240, 0.24);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.checkout-panel .selected-item {
+  border-bottom-color: rgba(255, 232, 240, 0.16);
+}
+
+.checkout-panel .totals > div {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 232, 240, 0.22);
+}
+
+.checkout-panel .secondary-button {
+  background: #ffe2ec;
+  color: #96385f;
+}
+
+.checkout-panel .primary-button,
+.mobile-record-button {
+  background: #ffb26e;
+  color: #4f1c2f;
 }
 
 .checkout-actions {
@@ -1069,7 +1184,7 @@ th {
     padding-left: max(4px, env(safe-area-inset-left));
     padding-right: max(4px, env(safe-area-inset-right));
     padding-top: max(6px, env(safe-area-inset-top));
-    padding-bottom: max(132px, calc(env(safe-area-inset-bottom) + 118px));
+    padding-bottom: max(24px, calc(env(safe-area-inset-bottom) + 16px));
   }
 
   .mobile-app-header {
@@ -1184,13 +1299,13 @@ th {
   }
 
   .stock-type-summary {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
     margin-bottom: 10px;
   }
 
   .stock-type-summary article {
-    padding: 10px;
+    padding: 12px;
   }
 
   .inventory-insights article,
@@ -1221,7 +1336,7 @@ th {
     width: 100%;
     justify-content: center;
     white-space: normal;
-    min-height: 52px;
+    min-height: 46px;
     padding: 8px 4px;
     gap: 4px;
     flex-direction: column;
@@ -1233,14 +1348,14 @@ th {
   }
 
   .catalog-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 6px;
   }
 
   .catalog-card {
-    padding: 10px;
+    padding: 8px;
     border-radius: 14px;
-    min-height: 96px;
+    min-height: 88px;
   }
 
   .catalog-empty-state {
@@ -1263,7 +1378,7 @@ th {
   }
 
   .catalog-panel {
-    padding-bottom: 108px;
+    padding-bottom: 8px;
   }
 
   .checkout-panel {
@@ -1271,7 +1386,7 @@ th {
     position: sticky;
     top: calc(env(safe-area-inset-top) + 58px);
     z-index: 20;
-    background: rgba(255, 252, 247, 0.92);
+    background: linear-gradient(180deg, rgba(208, 102, 138, 0.94), rgba(178, 76, 118, 0.96));
     border-radius: 14px;
     padding-bottom: 8px;
   }
@@ -1282,31 +1397,32 @@ th {
   }
 
   .stock-group-header {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    align-items: center;
   }
 
   .stock-group-header h3 {
-    font-size: 0.96rem;
+    font-size: 1rem;
   }
 
   .stock-adjust-item {
     gap: 8px;
-    padding: 8px 0;
+    padding: 10px;
   }
 
   .stock-adjust-name {
-    font-size: 0.84rem;
+    font-size: 0.9rem;
   }
 
   .stock-adjust-price {
-    font-size: 0.74rem;
+    font-size: 0.76rem;
   }
 
   .stock-adjust-input {
-    width: 56px;
-    min-height: 34px;
+    width: 64px;
+    min-height: 38px;
     padding: 6px;
-    font-size: 0.82rem;
+    font-size: 0.88rem;
   }
 
   .selection-badge {
@@ -1360,8 +1476,8 @@ th {
   .selected-items {
     min-height: 0;
     display: none;
-    max-height: 92px;
-    overflow: auto;
+    max-height: none;
+    overflow: visible;
     border-radius: 14px;
     padding: 6px;
   }
@@ -1375,7 +1491,9 @@ th {
   }
 
   .checkout-actions {
-    display: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 
   .checkout-form .field span {
@@ -1396,41 +1514,7 @@ th {
   }
 
   .mobile-checkout-bar {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 40;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    align-items: center;
-    padding: 8px max(6px, env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(6px, env(safe-area-inset-left));
-    background: rgba(223, 145, 162, 0.92);
-    color: #fff;
-    backdrop-filter: blur(18px);
-    box-shadow: 0 -12px 28px rgba(0, 0, 0, 0.18);
-  }
-
-  .mobile-checkout-bar span {
-    display: block;
-    font-size: 0.66rem;
-    color: rgba(255, 255, 255, 0.72);
-    margin-bottom: 4px;
-  }
-
-  .mobile-checkout-bar strong {
-    font-size: 0.84rem;
-    line-height: 1.1;
-  }
-
-  .mobile-record-button {
-    grid-column: 1 / -1;
-    width: 100%;
-    min-width: 0;
-    padding-inline: 10px;
-    background: #f4b06f;
-    color: #352417;
+    display: none;
   }
 
   .table-wrap {
@@ -1520,6 +1604,10 @@ th {
     min-height: 42px;
   }
 
+  .catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .mobile-app-header .brand-logo {
     width: 40px;
     height: 40px;
@@ -1534,6 +1622,11 @@ th {
   .mini-button {
     min-height: 32px;
     font-size: 0.68rem;
+  }
+
+  .selected-items {
+    max-height: none;
+    overflow: visible;
   }
 
   .mobile-checkout-bar {

@@ -2,9 +2,13 @@ const inventoryItems = [
   { category: "Tart", name: "Almond Egg Tart Original", price: 5.0, flavorClass: "flavor-almond" },
   { category: "Tart", name: "Almond Egg Tart Chocolate", price: 5.0, flavorClass: "flavor-chocolate" },
   { category: "Tart", name: "Hong Kong Egg Tart", price: 4.0, flavorClass: "flavor-hong-kong" },
+  { category: "Tart", name: "Portuguese Egg Tart", price: 5.0, flavorClass: "flavor-portuguese" },
   { category: "Pie", name: "Chicken Pie", price: 5.0, flavorClass: "flavor-chicken" },
   { category: "Sandwich", name: "Tuna Sandwich", price: 5.0, flavorClass: "flavor-tuna" },
   { category: "Sandwich", name: "Egg Mayo Sandwich", price: 5.0, flavorClass: "flavor-egg" },
+  { category: "Sandwich", name: "Ham & Cheese Sandwich", price: 5.0, flavorClass: "flavor-ham-cheese" },
+  { category: "Sandwich", name: "Crab Meat Sandwich", price: 5.0, flavorClass: "flavor-crab" },
+  { category: "Sandwich", name: "Sausage Sandwich", price: 5.0, flavorClass: "flavor-sausage" },
   { category: "Croissant", name: "Almond Croissant", price: 10.0, flavorClass: "flavor-almond" },
   { category: "Croissant", name: "Pistachio Croissant", price: 12.0, flavorClass: "flavor-pistachio" },
   { category: "Croissant", name: "Chocolate Croissant", price: 9.0, flavorClass: "flavor-chocolate" },
@@ -13,10 +17,18 @@ const inventoryItems = [
   { category: "Bomboloni", name: "Chocolate Bomboloni", price: 6.0, flavorClass: "flavor-chocolate" },
   { category: "Bomboloni", name: "Lotus Bomboloni", price: 6.0, flavorClass: "flavor-lotus" },
   { category: "Pastry", name: "Pain au Chocolat", price: 9.0, flavorClass: "flavor-pain" },
-  { category: "Set", name: "Puff Set", price: 16.0, flavorClass: "flavor-puff" }
+  { category: "Set", name: "Puff Set (Chocolate + Vanilla)", price: 16.0, flavorClass: "flavor-puff-duo" }
 ];
 
+const defaultStockByItem = {
+  "Chocolate Croissant": 10,
+  "Almond Croissant": 8,
+  "Pistachio Croissant": 8,
+  "Pain au Chocolat": 8
+};
+
 const categoryMeta = {
+  All: { icon: "AL", labelClass: "label-all" },
   Tart: { icon: "TR", labelClass: "label-tart" },
   Pie: { icon: "PI", labelClass: "label-pie" },
   Sandwich: { icon: "SW", labelClass: "label-sandwich" },
@@ -53,7 +65,7 @@ const exportCashPdfButton = document.getElementById("export-cash-pdf");
 const exportQrPdfButton = document.getElementById("export-qr-pdf");
 const toastElement = document.getElementById("toast");
 
-let activeCategory = inventoryItems[0].category;
+let activeCategory = "All";
 let selectedQuantities = {};
 let editableStockLevels = {};
 let itemSearchTerm = "";
@@ -95,15 +107,20 @@ function saveSalesHistory(records) {
 
 function getStockLevels() {
   const saved = localStorage.getItem(stockStorageKey);
-
-  if (saved) {
-    return JSON.parse(saved);
-  }
-
   const defaults = inventoryItems.reduce((stockMap, item) => {
-    stockMap[item.name] = 20;
+    stockMap[item.name] = defaultStockByItem[item.name] ?? 20;
     return stockMap;
   }, {});
+
+  if (saved) {
+    const parsed = JSON.parse(saved);
+    const merged = inventoryItems.reduce((stockMap, item) => {
+      stockMap[item.name] = parsed[item.name] ?? defaults[item.name];
+      return stockMap;
+    }, {});
+    localStorage.setItem(stockStorageKey, JSON.stringify(merged));
+    return merged;
+  }
 
   localStorage.setItem(stockStorageKey, JSON.stringify(defaults));
   return defaults;
@@ -138,11 +155,11 @@ function showToast(message, type = "info") {
 function renderCatalog() {
   const stockLevels = editableStockLevels;
   const quantityMap = selectedQuantities;
-  const categories = [...new Set(inventoryItems.map((item) => item.category))];
+  const categories = ["All", ...new Set(inventoryItems.map((item) => item.category))];
   const normalizedItemSearch = itemSearchTerm.trim().toLowerCase();
   const visibleItems = inventoryItems
     .map((item, index) => ({ ...item, index }))
-    .filter((item) => item.category === activeCategory)
+    .filter((item) => activeCategory === "All" || item.category === activeCategory)
     .filter((item) => {
       if (!normalizedItemSearch) {
         return true;
@@ -208,9 +225,10 @@ function renderStockAdjustmentView() {
     .map(([category, items]) => {
       const totalStock = items.reduce((sum, item) => sum + item.stock, 0);
       return `
-        <article>
-          <span>${category}</span>
-          <strong>${totalStock}</strong>
+        <article class="stock-summary-card">
+          <span class="stock-summary-label">${category}</span>
+          <strong class="stock-summary-value">${totalStock}</strong>
+          <span class="stock-summary-unit">pcs in stock</span>
         </article>
       `;
     })
@@ -227,14 +245,14 @@ function renderStockAdjustmentView() {
               <p class="section-label">${category}</p>
               <h3>${category} Items</h3>
             </div>
-            <strong>${totalStock} pcs</strong>
+            <strong class="stock-group-total">${totalStock} pcs</strong>
           </div>
           <div class="stock-group-list">
             ${items
               .map(
                 (item) => `
                   <div class="stock-adjust-item">
-                    <div>
+                    <div class="stock-adjust-copy">
                       <p class="stock-adjust-name">${item.name}</p>
                       <p class="stock-adjust-price">${priceFormatter.format(item.price)}</p>
                     </div>

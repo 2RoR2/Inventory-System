@@ -1018,6 +1018,11 @@ th {
   margin-top: 4px;
 }
 
+.record-payment-cell {
+  display: grid;
+  gap: 8px;
+}
+
 .payment-badge {
   display: inline-flex;
   border-radius: 999px;
@@ -1034,6 +1039,16 @@ th {
 .payment-qr {
   background: rgba(229, 142, 160, 0.16);
   color: var(--brand-strong);
+}
+
+.record-payment-select {
+  min-height: 36px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text);
+  font: inherit;
 }
 
 @media (max-width: 1200px) {
@@ -1525,6 +1540,17 @@ th {
     display: grid;
     gap: 8px;
     margin-top: 8px;
+  }
+
+  .record-payment-cell {
+    width: 100%;
+  }
+
+  .record-payment-select {
+    width: 100%;
+    min-height: 34px;
+    padding: 6px 8px;
+    font-size: 0.78rem;
   }
 
   th,

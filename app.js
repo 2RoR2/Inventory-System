@@ -512,7 +512,15 @@ function renderSalesHistory() {
             <div class="record-time">${new Date(record.createdAt).toLocaleTimeString("en-MY")}</div>
           </td>
           <td>${items}</td>
-          <td><span class="payment-badge ${paymentClass}">${record.paymentMethod}</span></td>
+          <td>
+            <div class="record-payment-cell">
+              <span class="payment-badge ${paymentClass}">${record.paymentMethod}</span>
+              <select class="record-payment-select" data-sale-id="${record.id}">
+                <option value="Cash" ${record.paymentMethod === "Cash" ? "selected" : ""}>Cash</option>
+                <option value="QR" ${record.paymentMethod === "QR" ? "selected" : ""}>QR</option>
+              </select>
+            </div>
+          </td>
           <td>${priceFormatter.format(record.totalAmount)}</td>
           <td><button class="mini-button danger record-delete-button" type="button" data-sale-id="${record.id}">Delete</button></td>
         </tr>
@@ -536,7 +544,13 @@ function renderSalesHistory() {
               <strong>Sale Record</strong>
               <div class="record-time">${new Date(record.createdAt).toLocaleDateString("en-MY")} ${new Date(record.createdAt).toLocaleTimeString("en-MY")}</div>
             </div>
-            <span class="payment-badge ${paymentClass}">${record.paymentMethod}</span>
+            <div class="record-payment-cell">
+              <span class="payment-badge ${paymentClass}">${record.paymentMethod}</span>
+              <select class="record-payment-select" data-sale-id="${record.id}">
+                <option value="Cash" ${record.paymentMethod === "Cash" ? "selected" : ""}>Cash</option>
+                <option value="QR" ${record.paymentMethod === "QR" ? "selected" : ""}>QR</option>
+              </select>
+            </div>
           </div>
           <p class="sales-card-items">${items}</p>
           <div class="sales-card-total">${priceFormatter.format(record.totalAmount)}</div>
@@ -547,6 +561,38 @@ function renderSalesHistory() {
       `;
     })
     .join("");
+}
+
+function updateSalePaymentMethod(saleId, nextPaymentMethod) {
+  const records = getSalesHistory();
+  const targetRecord = records.find((record) => record.id === saleId);
+
+  if (!targetRecord || targetRecord.paymentMethod === nextPaymentMethod) {
+    renderSalesHistory();
+    return;
+  }
+
+  const confirmed = window.confirm(`Are you sure you want to change the payment method to ${nextPaymentMethod}?`);
+
+  if (!confirmed) {
+    renderSalesHistory();
+    return;
+  }
+
+  const updatedRecords = records.map((record) => {
+    if (record.id !== saleId) {
+      return record;
+    }
+
+    return {
+      ...record,
+      paymentMethod: nextPaymentMethod
+    };
+  });
+
+  saveSalesHistory(updatedRecords);
+  renderSalesHistory();
+  showToast("Payment method updated.", "success");
 }
 
 function deleteSaleRecord(saleId) {
@@ -715,6 +761,16 @@ mobileSalesHistory.addEventListener("click", (event) => {
   deleteSaleRecord(deleteButton.dataset.saleId);
 });
 
+mobileSalesHistory.addEventListener("change", (event) => {
+  const paymentSelect = event.target.closest(".record-payment-select");
+
+  if (!paymentSelect) {
+    return;
+  }
+
+  updateSalePaymentMethod(paymentSelect.dataset.saleId, paymentSelect.value);
+});
+
 historyTable.addEventListener("click", (event) => {
   const deleteButton = event.target.closest(".record-delete-button");
 
@@ -723,6 +779,16 @@ historyTable.addEventListener("click", (event) => {
   }
 
   deleteSaleRecord(deleteButton.dataset.saleId);
+});
+
+historyTable.addEventListener("change", (event) => {
+  const paymentSelect = event.target.closest(".record-payment-select");
+
+  if (!paymentSelect) {
+    return;
+  }
+
+  updateSalePaymentMethod(paymentSelect.dataset.saleId, paymentSelect.value);
 });
 
 catalog.addEventListener("input", (event) => {

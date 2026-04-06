@@ -352,23 +352,7 @@ function getFilteredSalesRecords(records = getSalesHistory()) {
   });
 }
 
-function exportSalesPdf(paymentMethod) {
-  const records = getSalesHistory().filter((record) => record.paymentMethod === paymentMethod);
-
-  if (!records.length) {
-    showToast(`No ${paymentMethod} sales available to export.`, "warning");
-    return;
-  }
-
-  const totalAmount = records.reduce((sum, record) => sum + record.totalAmount, 0);
-  const reportDate = new Date();
-  const popup = window.open("", "_blank", "width=900,height=700");
-
-  if (!popup) {
-    window.alert("Please allow popups to export the PDF.");
-    return;
-  }
-
+function buildSalesReportMarkup(paymentMethod, records, totalAmount, reportDate) {
   const rows = records
     .slice()
     .reverse()
@@ -389,57 +373,15 @@ function exportSalesPdf(paymentMethod) {
     })
     .join("");
 
-  popup.document.write(`
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <title>${paymentMethod} Sales Report</title>
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          margin: 24px;
-          color: #4b3940;
-        }
-        h1 {
-          margin: 0 0 8px;
-          font-size: 24px;
-        }
-        .meta {
-          margin-bottom: 20px;
-          color: #7d6570;
-        }
-        .summary {
-          margin-bottom: 20px;
-          padding: 14px 16px;
-          border: 1px solid #edd6dc;
-          border-radius: 12px;
-          background: #fff7fa;
-        }
-        table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-        th, td {
-          border: 1px solid #edd6dc;
-          padding: 10px;
-          text-align: left;
-          vertical-align: top;
-          font-size: 14px;
-        }
-        th {
-          background: #fde7ee;
-        }
-      </style>
-    </head>
-    <body>
+  return `
+    <section class="print-report-sheet">
       <h1>${paymentMethod} Sales Report</h1>
-      <div class="meta">Generated on ${reportDate.toLocaleDateString("en-MY")} ${reportDate.toLocaleTimeString("en-MY")}</div>
-      <div class="summary">
+      <div class="print-report-meta">Generated on ${reportDate.toLocaleDateString("en-MY")} ${reportDate.toLocaleTimeString("en-MY")}</div>
+      <div class="print-report-summary">
         <strong>Total ${paymentMethod} Sales:</strong> ${priceFormatter.format(totalAmount)}<br>
         <strong>Transactions:</strong> ${records.length}
       </div>
-      <table>
+      <table class="print-report-table">
         <thead>
           <tr>
             <th>No.</th>
@@ -451,13 +393,44 @@ function exportSalesPdf(paymentMethod) {
         </thead>
         <tbody>${rows}</tbody>
       </table>
-    </body>
-    </html>
-  `);
+    </section>
+  `;
+}
 
-  popup.document.close();
-  popup.focus();
-  popup.print();
+function clearPrintReport() {
+  document.body.classList.remove("printing-report");
+  document.getElementById("print-report-root")?.remove();
+}
+
+function exportSalesPdf(paymentMethod) {
+  const records = getSalesHistory().filter((record) => record.paymentMethod === paymentMethod);
+
+  if (!records.length) {
+    showToast(`No ${paymentMethod} sales available to export.`, "warning");
+    return;
+  }
+
+  const totalAmount = records.reduce((sum, record) => sum + record.totalAmount, 0);
+  const reportDate = new Date();
+  clearPrintReport();
+
+  const reportRoot = document.createElement("div");
+  reportRoot.id = "print-report-root";
+  reportRoot.className = "print-report-root";
+  reportRoot.innerHTML = buildSalesReportMarkup(paymentMethod, records, totalAmount, reportDate);
+  document.body.appendChild(reportRoot);
+  document.body.classList.add("printing-report");
+
+  const handleAfterPrint = () => {
+    clearPrintReport();
+    window.removeEventListener("afterprint", handleAfterPrint);
+  };
+
+  window.addEventListener("afterprint", handleAfterPrint);
+
+  window.setTimeout(() => {
+    window.print();
+  }, 120);
 }
 
 function renderSalesHistory() {

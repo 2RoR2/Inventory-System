@@ -189,6 +189,52 @@ canvas {
   background: rgba(208, 133, 93, 0.97);
 }
 
+.print-report-root {
+  display: none;
+}
+
+.print-report-sheet {
+  font-family: Arial, sans-serif;
+  color: #4b3940;
+}
+
+.print-report-sheet h1 {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-family: Arial, sans-serif;
+}
+
+.print-report-meta {
+  margin-bottom: 20px;
+  color: #7d6570;
+}
+
+.print-report-summary {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border: 1px solid #edd6dc;
+  border-radius: 12px;
+  background: #fff7fa;
+}
+
+.print-report-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.print-report-table th,
+.print-report-table td {
+  border: 1px solid #edd6dc;
+  padding: 10px;
+  text-align: left;
+  vertical-align: top;
+  font-size: 14px;
+}
+
+.print-report-table th {
+  background: #fde7ee;
+}
+
 h1,
 h2 {
   margin: 0;
@@ -1546,6 +1592,27 @@ th {
   }
 
   .mobile-record-button {
+    min-width: 0;
+  }
+}
+
+@media print {
+  body {
+    background: #fff !important;
+    color: #000;
+  }
+
+  body.printing-report .app-shell,
+  body.printing-report .app-toast {
+    display: none !important;
+  }
+
+  body.printing-report .print-report-root {
+    display: block !important;
+    padding: 24px;
+  }
+
+  .print-report-table {
     min-width: 0;
   }
 }

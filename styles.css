@@ -235,6 +235,13 @@ canvas {
   background: #fde7ee;
 }
 
+.print-report-comment {
+  display: inline-block;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #7d6570;
+}
+
 h1,
 h2 {
   margin: 0;
@@ -817,6 +824,12 @@ h2 {
   gap: 16px;
 }
 
+.checkout-money-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
 .selected-items {
   min-height: 180px;
   border-radius: var(--radius-md);
@@ -880,6 +893,12 @@ h2 {
 }
 
 .checkout-panel .field select {
+  background: rgba(255, 248, 251, 0.96);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #7c3354;
+}
+
+.checkout-panel .field input {
   background: rgba(255, 248, 251, 0.96);
   border-color: rgba(255, 255, 255, 0.28);
   color: #7c3354;
@@ -1038,6 +1057,12 @@ th {
 .record-payment-cell {
   display: grid;
   gap: 8px;
+}
+
+.record-payment-note {
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.4;
 }
 
 .payment-badge {
@@ -1522,6 +1547,11 @@ th {
     gap: 8px;
   }
 
+  .checkout-money-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
   .checkout-actions {
     display: grid;
     grid-template-columns: 1fr;
@@ -1533,6 +1563,11 @@ th {
   }
 
   .checkout-form .field select {
+    min-height: 36px;
+    padding: 8px 10px;
+  }
+
+  .checkout-form .field input {
     min-height: 36px;
     padding: 8px 10px;
   }

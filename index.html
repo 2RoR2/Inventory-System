@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bakery Inventory System</title>
+  <link rel="icon" type="image/jpeg" href="images/logo.jpg">
+  <link rel="shortcut icon" type="image/jpeg" href="images/logo.jpg">
+  <link rel="apple-touch-icon" href="images/logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="toast" class="app-toast" aria-live="polite" aria-atomic="true"></div>
+  <main class="app-shell">
+    <section class="mobile-app-header">
+      <div class="brand-block">
+        <img class="brand-logo" src="images/logo.jpg" alt="Bakery logo">
+        <div>
+          <p class="eyebrow">Desserts POS</p>
+          <h1>Counter</h1>
+        </div>
+      </div>
+      <div class="mobile-header-pill">
+        <span>Today</span>
+        <strong id="mobile-today-sales">RM0.00</strong>
+      </div>
+    </section>
+
+    <section class="hero">
+      <div class="brand-block">
+        <img class="brand-logo hero-logo" src="images/logo.jpg" alt="Bakery logo">
+        <div>
+          <p class="eyebrow">Sales + Inventory</p>
+          <h1>Bakery Counter System</h1>
+          <p class="hero-copy">
+            Record item sales, choose cash or QR payment, and calculate the order total in one place.
+          </p>
+        </div>
+      </div>
+      <div class="hero-summary">
+        <article>
+          <span>Products</span>
+          <strong id="product-count">0</strong>
+        </article>
+        <article>
+          <span>Today Sales</span>
+          <strong id="today-sales">RM0.00</strong>
+        </article>
+      </div>
+    </section>
+
+    <nav class="top-nav" aria-label="Main navigation">
+      <button class="nav-tab active" type="button" data-view-target="checkout-view">Pick & Calculate</button>
+      <button class="nav-tab" type="button" data-view-target="stock-view">Adjust Quantity</button>
+      <button class="nav-tab" type="button" data-view-target="sales-view">Total Sales</button>
+    </nav>
+
+    <section id="checkout-view" class="view-panel active">
+      <section class="layout">
+        <section class="panel catalog-panel">
+          <div class="section-heading">
+            <div>
+              <p class="section-label">Menu</p>
+              <h2>Items For Sale</h2>
+              <p class="section-helper">Tap any item card to add 1 quantity. Use -1 or Remove if needed.</p>
+            </div>
+            <div class="header-actions">
+              <button id="reset-quantities" class="ghost-button" type="button">Clear Quantities</button>
+            </div>
+          </div>
+          <div class="inventory-insights">
+            <article>
+              <span>Selected Qty</span>
+              <strong id="selected-quantity-total">0</strong>
+            </article>
+            <article>
+              <span>Inventory Value</span>
+              <strong id="inventory-value">RM0.00</strong>
+            </article>
+          </div>
+          <div class="search-row">
+            <label class="field search-field">
+              <span>Search Items</span>
+              <input id="item-search" type="search" placeholder="Search item keyword">
+            </label>
+          </div>
+          <nav id="category-nav" class="category-nav" aria-label="Product categories"></nav>
+          <div id="catalog" class="catalog-grid"></div>
+        </section>
+
+        <section class="panel checkout-panel">
+          <div class="section-heading">
+            <div>
+              <p class="section-label">Checkout</p>
+              <h2>Pick Items & Calculate</h2>
+              <p class="section-helper">Review the picked items, choose payment, then record the sale.</p>
+            </div>
+          </div>
+
+          <form id="checkout-form" class="checkout-form">
+            <label class="field">
+              <span>Payment Method</span>
+              <select id="payment-method">
+                <option value="Cash">Cash</option>
+                <option value="QR">QR</option>
+              </select>
+            </label>
+
+            <div id="selected-items" class="selected-items empty-state">
+              Select quantities from the menu to see the order summary.
+            </div>
+
+            <div class="totals">
+              <div>
+                <span>Items</span>
+                <strong id="total-items">0</strong>
+              </div>
+              <div>
+                <span>Total</span>
+                <strong id="order-total">RM0.00</strong>
+              </div>
+            </div>
+
+            <div class="checkout-actions">
+              <button id="calculate-total" type="button" class="secondary-button">Calculate Total</button>
+              <button type="submit" class="primary-button">Record Sale</button>
+            </div>
+          </form>
+        </section>
+      </section>
+
+      <div class="mobile-checkout-bar">
+        <div>
+          <span>Selected</span>
+          <strong id="mobile-total-items">0 items</strong>
+        </div>
+        <div>
+          <span>Total</span>
+          <strong id="mobile-order-total">RM0.00</strong>
+        </div>
+        <button type="submit" form="checkout-form" class="primary-button mobile-record-button">Record Sale</button>
+      </div>
+    </section>
+
+    <section id="stock-view" class="view-panel">
+      <section class="panel stock-panel">
+        <div class="section-heading">
+          <div>
+            <p class="section-label">Stock Control</p>
+            <h2>Adjust Quantity By Type</h2>
+          </div>
+          <button id="save-all-stock" class="primary-button" type="button">Save All Stock</button>
+        </div>
+
+        <div class="stock-type-summary" id="stock-type-summary"></div>
+        <div id="stock-adjustment-groups" class="stock-adjustment-groups"></div>
+      </section>
+    </section>
+
+    <section id="sales-view" class="view-panel">
+      <section class="panel records-panel">
+        <div class="section-heading">
+          <div>
+            <p class="section-label">History</p>
+            <h2>Total Sales Dashboard</h2>
+          </div>
+          <div class="header-actions">
+            <button id="export-cash-pdf" class="secondary-button" type="button">Export Cash PDF</button>
+            <button id="export-qr-pdf" class="secondary-button" type="button">Export QR PDF</button>
+            <button id="clear-history" class="ghost-button" type="button">Clear History</button>
+          </div>
+        </div>
+
+        <div class="opening-cash-panel">
+          <label class="field opening-cash-field">
+            <span>Opening Cash</span>
+            <input id="opening-cash" type="number" min="0" step="0.01" placeholder="0.00">
+          </label>
+          <button id="save-opening-cash" class="primary-button" type="button">Save Opening Cash</button>
+        </div>
+
+        <div class="metrics-row">
+          <article>
+            <span>Opening Cash</span>
+            <strong id="opening-cash-total">RM0.00</strong>
+          </article>
+          <article>
+            <span>Total Cash</span>
+            <strong id="cash-total">RM0.00</strong>
+          </article>
+          <article>
+            <span>Total QR</span>
+            <strong id="qr-total">RM0.00</strong>
+          </article>
+          <article>
+            <span>Cash In Drawer</span>
+            <strong id="cash-drawer-total">RM0.00</strong>
+          </article>
+          <article>
+            <span>Transactions</span>
+            <strong id="transaction-count">0</strong>
+          </article>
+        </div>
+
+        <div class="search-row sales-filter-row">
+          <label class="field search-field">
+            <span>Search Sales</span>
+            <input id="sales-search" type="search" placeholder="Search item, date or amount">
+          </label>
+          <label class="field filter-field">
+            <span>Payment Filter</span>
+            <select id="sales-payment-filter">
+              <option value="All">All</option>
+              <option value="QR">QR</option>
+              <option value="Cash">Cash</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Items</th>
+                <th>Payment</th>
+                <th>Total</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="sales-history">
+              <tr>
+                <td colspan="5" class="empty-table">No sales recorded yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="mobile-sales-history" class="sales-cards"></div>
+      </section>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,15 +1,15 @@
 :root {
-  --bg: #fff6f2;
-  --bg-accent: #ffe8dc;
-  --panel: rgba(255, 250, 247, 0.92);
-  --panel-strong: #fffdfb;
-  --line: rgba(171, 124, 128, 0.18);
-  --text: #5b4246;
-  --muted: #9a7d82;
-  --brand: #e58ea0;
-  --brand-strong: #cf7187;
-  --success: #7dbb9d;
-  --shadow: 0 20px 45px rgba(214, 162, 170, 0.18);
+  --bg: #f3e5d2;
+  --bg-accent: #d8bea2;
+  --panel: rgba(255, 250, 243, 0.92);
+  --panel-strong: #fffdf9;
+  --line: rgba(102, 72, 45, 0.16);
+  --text: #4e3525;
+  --muted: #8c6c56;
+  --brand: #8b5e3c;
+  --brand-strong: #6b4428;
+  --success: #7f9a68;
+  --shadow: 0 20px 45px rgba(99, 67, 40, 0.16);
   --radius-lg: 24px;
   --radius-md: 16px;
   --radius-sm: 12px;
@@ -34,9 +34,9 @@ body {
   color: var(--text);
   overflow-x: hidden;
   background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.88), transparent 30%),
-    radial-gradient(circle at top right, rgba(255, 229, 236, 0.75), transparent 28%),
-    linear-gradient(145deg, #fff9f6 0%, var(--bg) 48%, var(--bg-accent) 100%);
+    radial-gradient(circle at top left, rgba(255, 252, 246, 0.92), transparent 30%),
+    radial-gradient(circle at top right, rgba(201, 160, 112, 0.18), transparent 28%),
+    linear-gradient(145deg, #f8eedf 0%, var(--bg) 48%, var(--bg-accent) 100%);
 }
 
 button,
@@ -97,7 +97,7 @@ canvas {
   object-position: center;
   flex: 0 0 auto;
   border: 3px solid rgba(255, 255, 255, 0.88);
-  box-shadow: 0 12px 24px rgba(214, 162, 170, 0.2);
+  box-shadow: 0 12px 24px rgba(99, 67, 40, 0.18);
   background: #fff;
 }
 
@@ -120,7 +120,7 @@ canvas {
 
 .nav-tab {
   border: 1px solid var(--line);
-  background: rgba(255, 250, 243, 0.8);
+  background: rgba(255, 249, 241, 0.88);
   color: var(--brand-strong);
   border-radius: 999px;
   padding: 12px 18px;
@@ -186,7 +186,7 @@ canvas {
 }
 
 .app-toast.warning {
-  background: rgba(208, 133, 93, 0.97);
+  background: rgba(166, 108, 63, 0.97);
 }
 
 .print-report-root {
@@ -195,7 +195,7 @@ canvas {
 
 .print-report-sheet {
   font-family: Arial, sans-serif;
-  color: #4b3940;
+  color: #4e3525;
 }
 
 .print-report-sheet h1 {
@@ -206,15 +206,15 @@ canvas {
 
 .print-report-meta {
   margin-bottom: 20px;
-  color: #7d6570;
+  color: #8c6c56;
 }
 
 .print-report-summary {
   margin-bottom: 20px;
   padding: 14px 16px;
-  border: 1px solid #edd6dc;
+  border: 1px solid #dcc7b0;
   border-radius: 12px;
-  background: #fff7fa;
+  background: #fff8ef;
 }
 
 .print-report-table {
@@ -224,7 +224,7 @@ canvas {
 
 .print-report-table th,
 .print-report-table td {
-  border: 1px solid #edd6dc;
+  border: 1px solid #dcc7b0;
   padding: 10px;
   text-align: left;
   vertical-align: top;
@@ -232,14 +232,14 @@ canvas {
 }
 
 .print-report-table th {
-  background: #fde7ee;
+  background: #f4e4d2;
 }
 
 .print-report-comment {
   display: inline-block;
   font-size: 12px;
   line-height: 1.45;
-  color: #7d6570;
+  color: #8c6c56;
 }
 
 h1,
@@ -392,8 +392,8 @@ h2 {
 }
 
 .stock-summary-card {
-  background: linear-gradient(180deg, rgba(255, 252, 249, 0.98), rgba(255, 245, 247, 0.98));
-  box-shadow: 0 10px 20px rgba(214, 162, 170, 0.08);
+  background: linear-gradient(180deg, rgba(255, 252, 247, 0.98), rgba(247, 236, 220, 0.98));
+  box-shadow: 0 10px 20px rgba(99, 67, 40, 0.08);
 }
 
 .stock-summary-label {
@@ -406,13 +406,13 @@ h2 {
   display: block;
   font-size: 1.55rem;
   line-height: 1;
-  color: #8f4465;
+  color: #6b4428;
   margin-bottom: 6px;
 }
 
 .stock-summary-unit {
   font-size: 0.76rem;
-  color: #ab7b89;
+  color: #9a7456;
 }
 
 .stock-adjustment-groups {
@@ -421,7 +421,7 @@ h2 {
 }
 
 .stock-group-card {
-  background: rgba(255, 252, 249, 0.92);
+  background: rgba(255, 251, 245, 0.92);
   border: 1px solid var(--line);
   border-radius: 18px;
   padding: 16px;
@@ -442,9 +442,9 @@ h2 {
 }
 
 .stock-group-total {
-  color: #8f4465;
-  background: rgba(229, 142, 160, 0.12);
-  border: 1px solid rgba(229, 142, 160, 0.18);
+  color: #6b4428;
+  background: rgba(139, 94, 60, 0.12);
+  border: 1px solid rgba(139, 94, 60, 0.18);
   border-radius: 999px;
   padding: 8px 12px;
   white-space: nowrap;
@@ -498,7 +498,7 @@ h2 {
   background: #fff;
   text-align: center;
   font-weight: 700;
-  color: #7c3354;
+  color: #6b4428;
 }
 
 .category-nav {
@@ -530,7 +530,7 @@ h2 {
 .category-button.active {
   background: var(--brand);
   color: #fff;
-  box-shadow: 0 10px 22px rgba(229, 142, 160, 0.28);
+  box-shadow: 0 10px 22px rgba(107, 68, 40, 0.24);
 }
 
 .category-icon {
@@ -556,35 +556,35 @@ h2 {
 }
 
 .label-tart {
-  color: #d98f71;
+  color: #b06f45;
 }
 
 .label-all {
-  color: #d46c95;
+  color: #7c4d2b;
 }
 
 .label-pie {
-  color: #da8d74;
+  color: #9e6039;
 }
 
 .label-sandwich {
-  color: #6ab7b1;
+  color: #6f8e63;
 }
 
 .label-croissant {
-  color: #d5a45f;
+  color: #b4833d;
 }
 
 .label-bomboloni {
-  color: #8ec77d;
+  color: #7f9a68;
 }
 
 .label-pastry {
-  color: #c69e7f;
+  color: #9c7658;
 }
 
 .label-set {
-  color: #d9a47b;
+  color: #b07c50;
 }
 
 .catalog-grid {
@@ -608,12 +608,12 @@ h2 {
 
 .catalog-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 16px 30px rgba(221, 170, 182, 0.18);
+  box-shadow: 0 16px 30px rgba(99, 67, 40, 0.16);
 }
 
 .catalog-card.selected {
-  border-color: rgba(229, 142, 160, 0.5);
-  box-shadow: 0 18px 32px rgba(229, 142, 160, 0.22);
+  border-color: rgba(139, 94, 60, 0.45);
+  box-shadow: 0 18px 32px rgba(107, 68, 40, 0.2);
 }
 
 .catalog-card.sold-out {
@@ -702,13 +702,13 @@ h2 {
   min-width: 34px;
   height: 34px;
   border-radius: 999px;
-  background: #f28fab;
+  background: #9c6a42;
   color: #fff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  box-shadow: 0 10px 18px rgba(242, 143, 171, 0.3);
+  box-shadow: 0 10px 18px rgba(107, 68, 40, 0.28);
 }
 
 .inventory-insights {
@@ -741,7 +741,7 @@ h2 {
   border-radius: 999px;
   padding: 6px 10px;
   background: rgba(255, 255, 255, 0.72);
-  color: #b97987;
+  color: #8c5a36;
   font-size: 0.78rem;
   margin-bottom: 10px;
 }
@@ -769,8 +769,8 @@ h2 {
   justify-content: center;
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(210, 104, 125, 0.14);
-  color: #c14f69;
+  background: rgba(147, 90, 52, 0.14);
+  color: #8b4f2a;
   font-weight: 700;
 }
 
@@ -782,7 +782,7 @@ h2 {
 
 .mini-button {
   flex: 1;
-  border: 1px solid rgba(197, 152, 160, 0.18);
+  border: 1px solid rgba(139, 94, 60, 0.16);
   border-radius: 999px;
   padding: 8px 10px;
   background: rgba(255, 255, 255, 0.9);
@@ -796,7 +796,7 @@ h2 {
 }
 
 .mini-button.danger {
-  color: #d2687d;
+  color: #9e5f38;
 }
 
 .field {
@@ -872,9 +872,9 @@ h2 {
 }
 
 .checkout-panel {
-  background: linear-gradient(180deg, rgba(208, 102, 138, 0.94), rgba(178, 76, 118, 0.96));
-  border-color: rgba(148, 56, 93, 0.24);
-  color: #fff8fb;
+  background: linear-gradient(180deg, rgba(94, 62, 39, 0.96), rgba(62, 40, 25, 0.98));
+  border-color: rgba(74, 47, 28, 0.3);
+  color: #fff9f2;
 }
 
 .checkout-panel .section-label,
@@ -883,7 +883,7 @@ h2 {
 .checkout-panel .totals span,
 .checkout-panel .selected-item div,
 .checkout-panel .empty-state {
-  color: rgba(255, 242, 247, 0.82);
+  color: rgba(255, 244, 230, 0.8);
 }
 
 .checkout-panel h2,
@@ -893,40 +893,40 @@ h2 {
 }
 
 .checkout-panel .field select {
-  background: rgba(255, 248, 251, 0.96);
+  background: rgba(255, 249, 241, 0.96);
   border-color: rgba(255, 255, 255, 0.28);
-  color: #7c3354;
+  color: #5b3a24;
 }
 
 .checkout-panel .field input {
-  background: rgba(255, 248, 251, 0.96);
+  background: rgba(255, 249, 241, 0.96);
   border-color: rgba(255, 255, 255, 0.28);
-  color: #7c3354;
+  color: #5b3a24;
 }
 
 .checkout-panel .selected-items {
-  border: 1px solid rgba(255, 232, 240, 0.24);
-  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 232, 208, 0.18);
+  background: rgba(255, 248, 239, 0.1);
 }
 
 .checkout-panel .selected-item {
-  border-bottom-color: rgba(255, 232, 240, 0.16);
+  border-bottom-color: rgba(255, 232, 208, 0.14);
 }
 
 .checkout-panel .totals > div {
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 232, 240, 0.22);
+  background: rgba(255, 248, 239, 0.1);
+  border-color: rgba(255, 232, 208, 0.18);
 }
 
 .checkout-panel .secondary-button {
-  background: #ffe2ec;
-  color: #96385f;
+  background: #efe0cf;
+  color: #5b3a24;
 }
 
 .checkout-panel .primary-button,
 .mobile-record-button {
-  background: #ffb26e;
-  color: #4f1c2f;
+  background: #d8aa63;
+  color: #402613;
 }
 
 .checkout-actions {
@@ -958,7 +958,7 @@ h2 {
 }
 
 .secondary-button {
-  background: #ffdbe5;
+  background: #ead8c2;
   color: var(--brand-strong);
 }
 
@@ -1074,12 +1074,12 @@ th {
 }
 
 .payment-cash {
-  background: rgba(125, 187, 157, 0.16);
-  color: #5d9a7d;
+  background: rgba(127, 154, 104, 0.16);
+  color: #6d875a;
 }
 
 .payment-qr {
-  background: rgba(229, 142, 160, 0.16);
+  background: rgba(139, 94, 60, 0.16);
   color: var(--brand-strong);
 }
 
@@ -1230,8 +1230,8 @@ th {
   body {
     font-size: 15px;
     background:
-      radial-gradient(circle at top, rgba(255, 255, 255, 0.92), transparent 26%),
-      linear-gradient(180deg, #f8efe4 0%, #f1ddc2 100%);
+      radial-gradient(circle at top, rgba(255, 254, 250, 0.92), transparent 26%),
+      linear-gradient(180deg, #f3e6d4 0%, #dcc3a6 100%);
   }
 
   .app-shell {
@@ -1271,9 +1271,9 @@ th {
     min-width: 0;
     border-radius: 14px;
     padding: 8px 10px;
-    background: rgba(255, 248, 250, 0.95);
-    border: 1px solid rgba(229, 142, 160, 0.18);
-    box-shadow: 0 10px 24px rgba(229, 142, 160, 0.14);
+    background: rgba(255, 250, 243, 0.96);
+    border: 1px solid rgba(139, 94, 60, 0.14);
+    box-shadow: 0 10px 24px rgba(107, 68, 40, 0.12);
   }
 
   .mobile-header-pill span {
@@ -1306,8 +1306,8 @@ th {
     gap: 5px;
     margin-bottom: 8px;
     padding: 3px;
-    background: rgba(255, 247, 249, 0.84);
-    border: 1px solid rgba(229, 142, 160, 0.12);
+    background: rgba(255, 248, 239, 0.9);
+    border: 1px solid rgba(139, 94, 60, 0.12);
     border-radius: 16px;
     position: sticky;
     top: max(4px, env(safe-area-inset-top));
@@ -1329,7 +1329,7 @@ th {
   .panel {
     padding: 8px;
     border-radius: 16px;
-    box-shadow: 0 14px 32px rgba(84, 53, 24, 0.1);
+    box-shadow: 0 14px 32px rgba(84, 53, 24, 0.12);
   }
 
   .section-heading {
@@ -1443,7 +1443,7 @@ th {
     position: sticky;
     top: calc(env(safe-area-inset-top) + 58px);
     z-index: 20;
-    background: linear-gradient(180deg, rgba(208, 102, 138, 0.94), rgba(178, 76, 118, 0.96));
+    background: linear-gradient(180deg, rgba(94, 62, 39, 0.96), rgba(62, 40, 25, 0.98));
     border-radius: 14px;
     padding-bottom: 8px;
   }

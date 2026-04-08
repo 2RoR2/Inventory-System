@@ -1,41 +1,30 @@
 const inventoryItems = [
-  { category: "Tart", name: "Almond Egg Tart Original", price: 5.0, flavorClass: "flavor-almond" },
-  { category: "Tart", name: "Almond Egg Tart Chocolate", price: 5.0, flavorClass: "flavor-chocolate" },
-  { category: "Tart", name: "Hong Kong Egg Tart", price: 4.0, flavorClass: "flavor-hong-kong" },
-  { category: "Tart", name: "Portuguese Egg Tart", price: 5.0, flavorClass: "flavor-portuguese" },
-  { category: "Pie", name: "Chicken Pie", price: 5.0, flavorClass: "flavor-chicken" },
-  { category: "Sandwich", name: "Tuna Sandwich", price: 5.0, flavorClass: "flavor-tuna" },
-  { category: "Sandwich", name: "Egg Mayo Sandwich", price: 5.0, flavorClass: "flavor-egg" },
-  { category: "Sandwich", name: "Ham & Cheese Sandwich", price: 5.0, flavorClass: "flavor-ham-cheese" },
-  { category: "Sandwich", name: "Crab Meat Sandwich", price: 5.0, flavorClass: "flavor-crab" },
-  { category: "Sandwich", name: "Sausage Sandwich", price: 5.0, flavorClass: "flavor-sausage" },
-  { category: "Croissant", name: "Almond Croissant", price: 10.0, flavorClass: "flavor-almond" },
-  { category: "Croissant", name: "Pistachio Croissant", price: 12.0, flavorClass: "flavor-pistachio" },
-  { category: "Croissant", name: "Chocolate Croissant", price: 9.0, flavorClass: "flavor-chocolate" },
-  { category: "Bomboloni", name: "Pistachio Bomboloni", price: 6.0, flavorClass: "flavor-pistachio" },
-  { category: "Bomboloni", name: "Matcha Bomboloni", price: 6.0, flavorClass: "flavor-matcha" },
-  { category: "Bomboloni", name: "Chocolate Bomboloni", price: 6.0, flavorClass: "flavor-chocolate" },
-  { category: "Bomboloni", name: "Lotus Bomboloni", price: 6.0, flavorClass: "flavor-lotus" },
-  { category: "Pastry", name: "Pain au Chocolat", price: 9.0, flavorClass: "flavor-pain" },
-  { category: "Set", name: "Puff Set (Chocolate + Vanilla)", price: 16.0, flavorClass: "flavor-puff-duo" }
+  { category: "Drinks", name: "Kopi C Peng Special", price: 5.8, flavorClass: "flavor-almond" },
+  { category: "Drinks", name: "Signature Kopi", price: 5.2, flavorClass: "flavor-chocolate" },
+  { category: "Drinks", name: "Signature Salted Kopi", price: 6.0, flavorClass: "flavor-pain" },
+  { category: "Drinks", name: "Cham", price: 5.5, flavorClass: "flavor-hong-kong" },
+  { category: "Drinks", name: "Hainan Kopi", price: 5.8, flavorClass: "flavor-portuguese" },
+  { category: "Drinks", name: "The C Special", price: 5.5, flavorClass: "flavor-tuna" },
+  { category: "Drinks", name: "Teh Tarik", price: 5.2, flavorClass: "flavor-egg" },
+  { category: "Drinks", name: "Hainan Teh", price: 5.6, flavorClass: "flavor-matcha" },
+  { category: "Drinks", name: "Milo", price: 5.5, flavorClass: "flavor-lotus" }
 ];
 
 const defaultStockByItem = {
-  "Chocolate Croissant": 10,
-  "Almond Croissant": 8,
-  "Pistachio Croissant": 8,
-  "Pain au Chocolat": 8
+  "Kopi C Peng Special": 20,
+  "Signature Kopi": 20,
+  "Signature Salted Kopi": 20,
+  "Cham": 20,
+  "Hainan Kopi": 20,
+  "The C Special": 20,
+  "Teh Tarik": 20,
+  "Hainan Teh": 20,
+  "Milo": 20
 };
 
 const categoryMeta = {
   All: { icon: "AL", labelClass: "label-all" },
-  Tart: { icon: "TR", labelClass: "label-tart" },
-  Pie: { icon: "PI", labelClass: "label-pie" },
-  Sandwich: { icon: "SW", labelClass: "label-sandwich" },
-  Croissant: { icon: "CR", labelClass: "label-croissant" },
-  Bomboloni: { icon: "BO", labelClass: "label-bomboloni" },
-  Pastry: { icon: "PA", labelClass: "label-pastry" },
-  Set: { icon: "ST", labelClass: "label-set" }
+  Drinks: { icon: "KP", labelClass: "label-all" }
 };
 
 const salesStorageKey = "bakery-sales-history";
@@ -200,7 +189,7 @@ function renderCatalog() {
           ${quantityMap[item.name] ? `<span class="selection-badge">${quantityMap[item.name]}</span>` : ""}
           <span class="category-tag">${item.category}</span>
           <p class="item-name">${item.name}</p>
-          <p class="item-price">${priceFormatter.format(item.price)} / pcs</p>
+          <p class="item-price">${priceFormatter.format(item.price)} / item</p>
           <div class="item-stock-display">
             ${Number(stockLevels[item.name] ?? 0) === 0 ? `<span class="item-unavailable">Not Available</span>` : `Available: ${stockLevels[item.name] ?? 0}`}
           </div>
@@ -244,7 +233,7 @@ function renderStockAdjustmentView() {
         <article class="stock-summary-card">
           <span class="stock-summary-label">${category}</span>
           <strong class="stock-summary-value">${totalStock}</strong>
-          <span class="stock-summary-unit">pcs in stock</span>
+          <span class="stock-summary-unit">items in stock</span>
         </article>
       `;
     })
@@ -261,7 +250,7 @@ function renderStockAdjustmentView() {
               <p class="section-label">${category}</p>
               <h3>${category} Items</h3>
             </div>
-            <strong class="stock-group-total">${totalStock} pcs</strong>
+            <strong class="stock-group-total">${totalStock} items</strong>
           </div>
           <div class="stock-group-list">
             ${items

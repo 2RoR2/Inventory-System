@@ -49,8 +49,6 @@ const orderTotalElement = document.getElementById("order-total");
 const historyTable = document.getElementById("sales-history");
 const mobileSalesHistory = document.getElementById("mobile-sales-history");
 const paymentMethodInput = document.getElementById("payment-method");
-const amountReceivedInput = document.getElementById("amount-received");
-const cashBackInput = document.getElementById("cash-back");
 const mobileTotalItemsElement = document.getElementById("mobile-total-items");
 const mobileOrderTotalElement = document.getElementById("mobile-order-total");
 const mobileTodaySalesElement = document.getElementById("mobile-today-sales");
@@ -300,23 +298,11 @@ function getSelectedItems() {
     .filter((item) => item.quantity > 0);
 }
 
-function getAmountReceivedValue(totalAmount) {
-  const rawValue = Number(amountReceivedInput.value || 0);
-
-  if (!rawValue) {
-    return totalAmount;
-  }
-
-  return rawValue;
-}
-
 function calculateOrder() {
   const stockLevels = editableStockLevels;
   const selectedItems = getSelectedItems();
   const totalItems = selectedItems.reduce((sum, item) => sum + item.quantity, 0);
   const totalAmount = selectedItems.reduce((sum, item) => sum + item.subtotal, 0);
-  const amountReceived = getAmountReceivedValue(totalAmount);
-  const cashBack = Math.max(0, amountReceived - totalAmount);
 
   if (!selectedItems.length) {
     selectedItemsContainer.className = "selected-items empty-state";
@@ -341,16 +327,13 @@ function calculateOrder() {
   totalItemsElement.textContent = String(totalItems);
   document.getElementById("selected-quantity-total").textContent = String(totalItems);
   orderTotalElement.textContent = priceFormatter.format(totalAmount);
-  cashBackInput.value = priceFormatter.format(cashBack);
   mobileTotalItemsElement.textContent = `${totalItems} item${totalItems === 1 ? "" : "s"}`;
   mobileOrderTotalElement.textContent = priceFormatter.format(totalAmount);
 
   return {
     selectedItems,
     totalItems,
-    totalAmount,
-    amountReceived,
-    cashBack
+    totalAmount
   };
 }
 
@@ -409,9 +392,6 @@ function buildSalesReportMarkup(paymentMethod, records, totalAmount, reportDate)
       const items = record.items
         .map((item) => `${item.name} x${item.quantity}`)
         .join(", ");
-      const exportComment = record.paymentMethod === "QR" && Number(record.cashBack || 0) > 0
-        ? `Received: ${priceFormatter.format(record.amountReceived || record.totalAmount)} | Cash Back: ${priceFormatter.format(record.cashBack || 0)}`
-        : "-";
 
       return `
         <tr>
@@ -420,7 +400,6 @@ function buildSalesReportMarkup(paymentMethod, records, totalAmount, reportDate)
           <td>${new Date(record.createdAt).toLocaleTimeString("en-MY")}</td>
           <td>${items}</td>
           <td>${priceFormatter.format(record.totalAmount)}</td>
-          <td><span class="print-report-comment">${exportComment}</span></td>
         </tr>
       `;
     })
@@ -442,7 +421,6 @@ function buildSalesReportMarkup(paymentMethod, records, totalAmount, reportDate)
             <th>Time</th>
             <th>Items</th>
             <th>Total</th>
-            <th>Comment</th>
           </tr>
         </thead>
         <tbody>${rows}</tbody>
@@ -496,9 +474,6 @@ function renderSalesHistory() {
   const qrTotal = records
     .filter((record) => record.paymentMethod === "QR")
     .reduce((sum, record) => sum + record.totalAmount, 0);
-  const qrCashBackTotal = records
-    .filter((record) => record.paymentMethod === "QR")
-    .reduce((sum, record) => sum + Number(record.cashBack || 0), 0);
   const today = new Date().toDateString();
   const todaySales = records
     .filter((record) => new Date(record.createdAt).toDateString() === today)
@@ -506,9 +481,8 @@ function renderSalesHistory() {
 
   document.getElementById("cash-total").textContent = priceFormatter.format(cashTotal);
   document.getElementById("qr-total").textContent = priceFormatter.format(qrTotal);
-  document.getElementById("cash-back-total").textContent = priceFormatter.format(qrCashBackTotal);
   document.getElementById("opening-cash-total").textContent = priceFormatter.format(openingCash);
-  document.getElementById("cash-drawer-total").textContent = priceFormatter.format(openingCash + cashTotal - qrCashBackTotal);
+  document.getElementById("cash-drawer-total").textContent = priceFormatter.format(openingCash + cashTotal);
   document.getElementById("transaction-count").textContent = String(records.length);
   document.getElementById("today-sales").textContent = priceFormatter.format(todaySales);
   mobileTodaySalesElement.textContent = priceFormatter.format(todaySales);
@@ -544,9 +518,6 @@ function renderSalesHistory() {
         .map((item) => `${item.name} (${item.quantity})`)
         .join(", ");
       const paymentClass = record.paymentMethod === "Cash" ? "payment-cash" : "payment-qr";
-      const paymentNote = record.paymentMethod === "QR" && Number(record.cashBack || 0) > 0
-        ? `<div class="record-payment-note">Received: ${priceFormatter.format(record.amountReceived || record.totalAmount)} | Cash Back: ${priceFormatter.format(record.cashBack || 0)}</div>`
-        : "";
 
       return `
         <tr>
@@ -558,7 +529,6 @@ function renderSalesHistory() {
           <td>
             <div class="record-payment-cell">
               <span class="payment-badge ${paymentClass}">${record.paymentMethod}</span>
-              ${paymentNote}
               <select class="record-payment-select" data-sale-id="${record.id}">
                 <option value="Cash" ${record.paymentMethod === "Cash" ? "selected" : ""}>Cash</option>
                 <option value="QR" ${record.paymentMethod === "QR" ? "selected" : ""}>QR</option>
@@ -580,9 +550,6 @@ function renderSalesHistory() {
         .map((item) => `${item.name} x${item.quantity}`)
         .join(", ");
       const paymentClass = record.paymentMethod === "Cash" ? "payment-cash" : "payment-qr";
-      const paymentNote = record.paymentMethod === "QR" && Number(record.cashBack || 0) > 0
-        ? `<div class="record-payment-note">Received: ${priceFormatter.format(record.amountReceived || record.totalAmount)} | Cash Back: ${priceFormatter.format(record.cashBack || 0)}</div>`
-        : "";
 
       return `
         <article class="sales-card">
@@ -593,7 +560,6 @@ function renderSalesHistory() {
             </div>
             <div class="record-payment-cell">
               <span class="payment-badge ${paymentClass}">${record.paymentMethod}</span>
-              ${paymentNote}
               <select class="record-payment-select" data-sale-id="${record.id}">
                 <option value="Cash" ${record.paymentMethod === "Cash" ? "selected" : ""}>Cash</option>
                 <option value="QR" ${record.paymentMethod === "QR" ? "selected" : ""}>QR</option>
@@ -675,8 +641,6 @@ function deleteSaleRecord(saleId) {
 function resetQuantities() {
   selectedQuantities = {};
   paymentMethodInput.value = "Cash";
-  amountReceivedInput.value = "";
-  cashBackInput.value = priceFormatter.format(0);
   renderCatalog();
   calculateOrder();
 }
@@ -731,14 +695,6 @@ salesSearchInput.addEventListener("input", () => {
   renderSalesHistory();
 });
 
-paymentMethodInput.addEventListener("change", () => {
-  calculateOrder();
-});
-
-amountReceivedInput.addEventListener("input", () => {
-  calculateOrder();
-});
-
 salesPaymentFilter.addEventListener("change", () => {
   activeSalesPaymentFilter = salesPaymentFilter.value;
   renderSalesHistory();
@@ -766,16 +722,11 @@ categoryNav.addEventListener("click", (event) => {
 document.getElementById("checkout-form").addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const { selectedItems, totalAmount, amountReceived, cashBack } = calculateOrder();
+  const { selectedItems, totalAmount } = calculateOrder();
   const stockLevels = getStockLevels();
 
   if (!selectedItems.length) {
     window.alert("Please add at least one item before recording the sale.");
-    return;
-  }
-
-  if (amountReceived < totalAmount) {
-    showToast("Amount received cannot be less than the order total.", "warning");
     return;
   }
 
@@ -791,8 +742,6 @@ document.getElementById("checkout-form").addEventListener("submit", (event) => {
     id: `sale-${Date.now()}`,
     paymentMethod: paymentMethodInput.value,
     totalAmount,
-    amountReceived,
-    cashBack,
     items: selectedItems.map(({ name, quantity, price, subtotal }) => ({
       name,
       quantity,
